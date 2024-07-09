@@ -2,31 +2,22 @@ import { User } from "@/model/model";
 import { NextResponse } from "next/server";
 
 //ROUTE 1 : GET User By Id [http://localhost:3000/api/user/userId]
-export async function GET( { params }:any) {
+export async function GET( request:any,{ params }:any) {
     // Get employeeId From params 
     const { userID } = params;
-    // console.log(params)
+    console.log(params)
 
     try {
         // Create Get Single User Account
         const getSingleUser = await User.findById(userID)
 
         // Return getSingleUser and status 
-        return NextResponse.json(
-            {getSingleUser,},{ status: 200,}
-        )
+        return NextResponse.json({getSingleUser},{ status: 200})
+
     } catch (error) {
         console.log(error);
-
         // Return Error And status 
-        return NextResponse.json(
-            {
-                error: 'failed to get single User',
-            },
-            {
-                status: 404,
-            }
-        )
+        return NextResponse.json({ error: 'failed to get single User'},{status: 404})
     }
 }
 
@@ -37,7 +28,7 @@ export async function PUT(req:any , { params }:any){
    const { userID } = params;
 
    // Get Data From Frontend 
-   const { name, email,mobile, address,fee_paid } = await req.json();
+   const { name, email,mobile, address,fee_paid,is_active } = await req.json();
 
    try {
        // Create User ( Get User By Id )
@@ -52,15 +43,15 @@ export async function PUT(req:any , { params }:any){
        user.address = address;
        // set user fee  
        user.fee_paid = fee_paid;
+       // set user is_active
+       user.is_active = is_active;
 
        // Create Update User
        const updatedUser = await user.save();
 
        // Return updatedUser, message and status 
-       return NextResponse.json(
-           { updatedUser, message: "User Updated Successfully"},
-           { status: 201}
-       )
+       return NextResponse.json({ updatedUser, message: "User Updated Successfully"},{ status: 201})
+
    } catch (error) {
        console.log(error)
 
@@ -77,19 +68,12 @@ export async function DELETE(request:any, { params }:any) {
 
   try {
       await User.findByIdAndDelete( userId )
-
       // Return message And Status 
-      return NextResponse.json(
-          { message: "User deleted successfully"},
-          { status: 201 }
-      )
+      return NextResponse.json({ message: "User deleted successfully"},{ status: 201 })
+
   } catch (error) {
       console.log(error)
-
       // Return Error And Status 
-      return NextResponse.json(
-          { error: 'failed to delete User',},
-          { status: 404, }
-      )
+      return NextResponse.json(  { error: 'failed to delete User'},  { status: 404 })
   }
 }

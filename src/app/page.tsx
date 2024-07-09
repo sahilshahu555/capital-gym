@@ -7,7 +7,7 @@ export default function Home() {
     <main  className="text-center text-2xl h-screen flex flex-col justify-center items-center font-bold gap-10">
 
     
-      <Link href="/userlist">User List</Link>
+      <Link href="/userlist">Go to User List Page</Link>
       
     </main>
   );

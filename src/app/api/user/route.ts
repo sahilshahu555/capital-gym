@@ -19,7 +19,7 @@ export async function GET (req:any){
 //ROUTE 2 : POST User By Id [http://localhost:3000/api/user]
 
 export async function POST (req:any){
-   const {name, email,mobile, address,fee_paid}= await req.json();
+   const {name, email,mobile, address,fee_paid,is_active}= await req.json();
 
    if( !name || !email || !address  ){
       return NextResponse.json({message:"All Fields are required"},{status:404})
@@ -32,7 +32,7 @@ export async function POST (req:any){
    }
 
    const newUser= new User({
-      name, email,mobile, address,fee_paid
+      name,email,mobile,address,fee_paid,is_active
    })
 
    try{

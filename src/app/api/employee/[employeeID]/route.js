@@ -1,4 +1,4 @@
-import { Employee } from "@/Models/employee";
+// import { Employee } from "@/Models/employee";
 import { NextResponse } from "next/server";
 
 //ROUTE 1 : GET Employee By Id [http://localhost:3000/api/employee/employeeId]

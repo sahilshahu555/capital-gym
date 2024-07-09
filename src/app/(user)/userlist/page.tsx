@@ -9,6 +9,8 @@ const UserList = (props: Props) => {
 
 // User State 
 const [userList, setUserList] = useState([]);
+const [load, setLoad] = useState(false);
+
 
 // Get User List Function 
 const getUserList = async () => {
@@ -20,6 +22,8 @@ const getUserList = async () => {
 
     // Store data in employee state through setEmployee()
     setUserList(data)
+    setLoad(false)
+
 }
 
 // Delete Employee Function 
@@ -49,13 +53,28 @@ const deleteEmployee = async (_id:string) => {
 
 useEffect(() => {
     // Call getUserList Function
+    setLoad(true)
     getUserList();
 }, []);
 
-console.log(userList);
+  if(userList){console.log(userList);}
+
+  
+if(load){return <h1 className='text-center my-10 text-3xl font-[900]'>Loading ...</h1>}
 
   return (
-    <div>UserList</div>
+    <div >
+        <h1 className='text-center my-10 text-3xl font-[900] '>All User List</h1>
+        <div className="grid grid-cols-2 mx-20 gap-5 text-center ">
+            {userList?.map((user:any,index)=>(
+                <Link href={`/${user._id}`} key={index}>
+                <div  className="bg-red-500 p-10">
+                    {user.name}
+                </div>
+                </Link>
+            ))}
+        </div>
+    </div>
   )
 }
 

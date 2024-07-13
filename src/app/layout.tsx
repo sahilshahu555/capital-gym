@@ -16,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="no-scrollbar">
-      <body className={inter.className} suppressHydrationWarning={true}>
+      <body className={`${inter.className} bg-gray-100`} suppressHydrationWarning={true} >
         {children}
       </body>
     </html>

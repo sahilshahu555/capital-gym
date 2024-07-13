@@ -59,21 +59,34 @@ useEffect(() => {
 
   if(userList){console.log(userList);}
 
+const t:any= new Date().toDateString().substring(8,10)
+
+
+
+console.log("Todays Date:- ", t , "p")
   
 if(load){return <h1 className='text-center my-10 text-3xl font-[900]'>Loading ...</h1>}
 
   return (
+
     <div >
-        <h1 className='text-center my-10 text-3xl font-[900] '>All User List</h1>
-        <div className="grid grid-cols-2 mx-20 gap-5 text-center ">
+        {t && <>
+            <h1 className='text-center mt-10 my-20 text-3xl font-[900] '>All User List</h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mx-10 gap-8  ">
             {userList?.map((user:any,index)=>(
                 <Link href={`/${user._id}`} key={index}>
-                <div  className="bg-red-500 p-10">
-                    {user.name}
+                <div  className={`${user.joining_date.toString().substring(8,10) === t?"bg-red-500":"bg-gray-500"} p-4 text-white rounded-xl shadow-md shadow-indigo-500  hover:scale-105 transition-all`}>
+                    <div className='flex flex-col gap-y-1   justify-center w-fit m-auto'>
+                        <h1>Full Name :- {user.name}</h1>
+                        <h1>Joining Date :- {user.joining_date.toString().substring(8,10) === t ? user.joining_date.toString().substring(0,10):"00"}</h1>
+
+                    </div>
                 </div>
                 </Link>
             ))}
         </div>
+        </>}
+      
     </div>
   )
 }

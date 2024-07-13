@@ -55,7 +55,8 @@ const AddUser = () => {
             }
             
         } catch (error:any) {
-            alert(error.error) // Error Message
+            alert(error.error) 
+         // Error Message
             console.log(error)
         }
        
@@ -143,8 +144,8 @@ const AddUser = () => {
 
                     {/* User Address Input  */}
                     <div className="">
-                        <input
-                            type="text"
+                        <textarea
+                            
                             name='userAddress'
                             placeholder='Enter address'
                             value={user.address}

@@ -15,8 +15,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="no-scrollbar">
-      <body className={`${inter.className} bg-gray-100`} suppressHydrationWarning={true} >
+    <html lang="en" className="scroll-smooth no-scrollbar">
+      <body className={`${inter.className} bg-[#262626]`} suppressHydrationWarning={true} >
         {children}
       </body>
     </html>

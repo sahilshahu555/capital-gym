@@ -27,8 +27,9 @@ export async function PUT(req:any , { params }:any){
    // Get userID From params 
    const { userID } = params;
 
+
    // Get Data From Frontend 
-   const { name, email,mobile, address,fee_paid,is_active } = await req.json();
+   const { name, email, mobile, address, fee_paid, is_active } = await req.json();
 
    try {
        // Create User ( Get User By Id )
@@ -56,7 +57,7 @@ export async function PUT(req:any , { params }:any){
        console.log(error)
 
        // Return Error And Status 
-     return NextResponse.json( {error: 'failed to update User',}, {status: 404,})
+     return NextResponse.json( {Error: 'failed to update User',error}, {status: 404,})
    }
 }
 

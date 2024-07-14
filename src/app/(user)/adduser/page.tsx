@@ -70,17 +70,17 @@ const AddUser = () => {
     }
 
     return (
-        <div className=' bg-gray-400 w-full m-auto flex flex-col justify-center items-center gap-y-10 h-screen'>
-            <h1 className="text-4xl font-bold ">Capital Gym</h1>
+        <div className=' bg-[#262626] w-full m-auto flex flex-col justify-center items-center gap-y-10 h-screen'>
+            <h1 className="text-4xl font-bold text-white ">Capital Gym</h1>
             {/* Main  */}
-            <div className="form border shadow-md border-white  bg-blue-200 rounded-xl p-10   ">
+            <div className="form border shadow-md border-white  bg-[#AFE61E] rounded-xl p-10   ">
                 
                 {/* Top  */}
                 <div className="top">
                     {/* Top-Child  */}
                     <div className="flex gap-[40px] mb-5 items-center ">
                         {/* Link  */}
-                        <Link href='/'>
+                        <Link href='/dashboard'>
                             {/* Svg Icon  */}
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="m11.25 9-3 3m0 0 3 3m-3-3h7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
@@ -123,7 +123,7 @@ const AddUser = () => {
                                 ...user,
                                 email: e.target.value
                             })}
-                            className='border border-gray-400 hover:border-gray-700 md:w-96 px-1.5 py-1.5 rounded-md outline-none mb-5 placeholder-gray-400'
+                            className='border border-gray-400 hover:border-gray-700  md:w-96 px-1.5 py-1.5 rounded-md outline-none mb-5 placeholder-gray-400'
                         />
                     </div>
 
@@ -153,7 +153,7 @@ const AddUser = () => {
                                 ...user,
                                 address: e.target.value
                             })}
-                            className='border border-gray-400 hover:border-gray-700 md:w-96 px-1.5 py-1.5 rounded-md outline-none mb-5 placeholder-gray-400'
+                            className='border border-gray-400 hover:border-gray-700 w-full md:w-96 px-1.5 py-1.5 rounded-md outline-none mb-5 placeholder-gray-400'
                         />
                     </div>
 

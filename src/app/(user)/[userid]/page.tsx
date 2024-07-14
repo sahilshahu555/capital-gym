@@ -8,6 +8,8 @@ const EditUser = ({ params }:any) => {
     // Crreate Router 
     const router = useRouter()
     const [flag, setFlag] = useState<boolean>(false)
+    const [load, setLoad] = useState<boolean>(false)
+
 
 
     //Create Employee State 
@@ -17,7 +19,8 @@ const EditUser = ({ params }:any) => {
         mobile:"",
         address: "",
         is_active: true,
-        fee_paid: false
+        fee_paid: false,
+        joining_date:""
     });
 
     // Destructure EmployeeId from params
@@ -41,14 +44,18 @@ const EditUser = ({ params }:any) => {
             address: data?.getSingleUser?.address,
             mobile: data?.getSingleUser?.mobile,
             is_active: data?.getSingleUser?.is_active,
-            fee_paid: data?.getSingleUser?.fee_paid
+            fee_paid: data?.getSingleUser?.fee_paid,
+            joining_date: data?.getSingleUser?.joining_date,
+
         })
+        setLoad(false)
 
     }
 
 
     // Create Update Employee Function
     const updateUser = async () => {
+        setLoad(true)
 
         const res = await
             fetch(`/api/user/${userid}`, {
@@ -63,6 +70,7 @@ const EditUser = ({ params }:any) => {
                     address: user.address,
                     fee_paid: user.fee_paid,
                     is_active:user.is_active,
+                    joining_date:user.joining_date
                 })
             })
         // Create Data 
@@ -80,22 +88,27 @@ const EditUser = ({ params }:any) => {
             alert(message) // Success Message
             router.push('/userlist') // navigate (/userlist) route
         }
+        setLoad(false)
+
     }
 
     useEffect(() => {
         // Call getUserById Function 
+        setLoad(true)
         getUserById();
     }, []);
+
+    if(load){return <h1 className='text-center my-10 text-3xl font-[900] h-screen flex justify-center items-center text-white'>Loading ...</h1>}
+
   return (
     
     
     <div className='text-center  font-bold '>
         {flag &&
-           
-           <div className=' bg-gray-400  m-auto flex flex-col justify-center items-center gap-y-6 h-screen '>
-            <h1 className="text-4xl font-bold ">Capital Gym</h1>
+           <div className=' bg-[#262626]  m-auto flex flex-col justify-center items-center gap-y-6 h-screen '>
+            <h1 className="text-4xl font-bold text-white">Capital Gym</h1>
             {/* Main  */}
-            <div className="md:w-[30%] shadow-md border border-gray-400 rounded-xl py-6 px-9 bg-white ">
+            <div className="md:w-[30%] shadow-md border border-gray-400 rounded-xl py-6 px-9 bg-[#AFE61E] ">
                 {/* Top  */}
                 <div className="top">
                     {/* Top-Child  */}
@@ -183,15 +196,23 @@ const EditUser = ({ params }:any) => {
                     </div>
                 </div>
             </div>
-        </div>
-
-
+           </div>
         }
 
-        {user && !flag &&
+        {user.name && !flag &&
         <div className="flex flex-col justify-center items-center h-screen">
-           <Link href={`/userlist`}> {user?.name}</Link>
-           <button className="bg-black w-40 text-white rounded-xl m-auto text-xl p-2 my-10" onClick={()=>{setFlag(!flag)}}>Edit User</button>
+           <Link href={`/userlist`} className="text-white"> {user?.name}</Link>
+           <h1 className="text-white">{user?.email}</h1>
+           <h1 className="text-white">{user?.mobile}</h1>
+           <h1 className="text-white">{user?.joining_date.toString().substring(0,10)}</h1>
+           <h1 className="text-white">{user?.address}</h1>
+
+
+
+          
+
+
+           <button className="bg-red-500  w-40 text-white rounded-xl m-auto text-md p-2 my-10 active:scale-90" onClick={()=>{setFlag(!flag)}}>Edit User</button>
         </div>
         }
     </div>

@@ -14,6 +14,7 @@ const EditUser = ({ params }:any) => {
 
     //Create Employee State 
     const [user, setUser] = useState({
+        _id:"",
         name: "",
         email: "",
         mobile:"",
@@ -39,6 +40,7 @@ const EditUser = ({ params }:any) => {
 
         // Set Employee Data
         setUser({
+            _id: data?.getSingleUser?._id,
             name: data?.getSingleUser?.name,
             email: data?.getSingleUser?.email,
             address: data?.getSingleUser?.address,
@@ -86,11 +88,36 @@ const EditUser = ({ params }:any) => {
         }
         else {
             alert(message) // Success Message
-            router.push('/userlist') // navigate (/userlist) route
+            // navigate (/userlist) route
         }
+        setFlag(!flag)
         setLoad(false)
 
     }
+
+  // Delete Employee Function 
+const deleteUser = async (_id:string) => {
+    const res = await fetch(`/api/user/${userid}`, {
+        method: 'DELETE'
+    })
+
+    // Create Data 
+    const data = await res.json();
+    console.log(data)
+
+    // Destructure data
+    const { message, error } = data
+
+    // Condition
+    if (error) {
+        alert(error) // Error Message
+    }
+    else {
+        alert(message) // Success Message
+        router.push("/userlist")
+    }
+
+}
 
     useEffect(() => {
         // Call getUserById Function 
@@ -103,10 +130,15 @@ const EditUser = ({ params }:any) => {
   return (
     
     
-    <div className='text-center  font-bold '>
+    <div className='  font-bold '>
+        <div className="fixed  py-6 w-full z-50 bg-[#AFE61E] border-b-2">
+           <Link href={"/dashboard"} >
+           <h1 className='text-center   text-3xl font-[900] w-full'>Edit User </h1>
+           </Link>
+           
+           </div>
         {flag &&
            <div className=' bg-[#262626]  m-auto flex flex-col justify-center items-center gap-y-6 h-screen '>
-            <h1 className="text-4xl font-bold text-white">Capital Gym</h1>
             {/* Main  */}
             <div className="md:w-[30%] shadow-md border border-gray-400 rounded-xl py-6 px-9 bg-[#AFE61E] ">
                 {/* Top  */}
@@ -201,18 +233,22 @@ const EditUser = ({ params }:any) => {
 
         {user.name && !flag &&
         <div className="flex flex-col justify-center items-center h-screen">
-           <Link href={`/userlist`} className="text-white"> {user?.name}</Link>
-           <h1 className="text-white">{user?.email}</h1>
-           <h1 className="text-white">{user?.mobile}</h1>
-           <h1 className="text-white">{user?.joining_date.toString().substring(0,10)}</h1>
-           <h1 className="text-white">{user?.address}</h1>
+            <div className="text-start  text-xl flex flex-col gap-3">
+                <Link href={`/userlist`} className="text-white">Name :- {user?.name}</Link>
+                <h1 className="text-white">Email :- {user?.email}</h1>
+                <h1 className="text-white">Mobile :- {user?.mobile}</h1>
+                <h1 className="text-white">Joining Date :- {user?.joining_date.toString().substring(0,10)}</h1>
+                <h1 className="text-white">Address :- {user?.address}</h1>
 
+                <div className="flex flex-row justift-center gap-5 items-center my-4 md:my-10 ">
 
+                    <button className="bg-red-500  w-40 text-white rounded-xl m-auto text-md p-2  active:scale-90 hover:bg-green-400" onClick={()=>{setFlag(!flag)}}>Edit User</button>
 
-          
+                    <button className="bg-red-500  w-40 text-white rounded-xl m-auto text-md p-2  active:scale-90 hover:bg-green-400" onClick={()=>{deleteUser(user?._id)}}>Delete User</button>
 
+                </div>
 
-           <button className="bg-red-500  w-40 text-white rounded-xl m-auto text-md p-2 my-10 active:scale-90" onClick={()=>{setFlag(!flag)}}>Edit User</button>
+           </div>
         </div>
         }
     </div>

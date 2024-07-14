@@ -30,7 +30,8 @@ export default function Home() {
   return (
     <main  className="text-center  h-screen flex flex-col justify-center items-center font-bold gap-10 text-white">
 
-    
+      <h1 className="text-3xl md:text-4xl text-white font-bold">Welcome to Capital Gym</h1>
+
       <form className=" flex flex-col justify-center items-center gap-10 bg-[#AFE61E] p-5 rounded-xl" onSubmit={onSubmit}>
         <h1 className="text-4xl text-gray-600">Login Form</h1>
         <input type="text" placeholder="Enter Your Email" value={user.email} onChange={(e) => setUser({ ...user,email: e.target.value})} className="border px-2 py-1.5 rounded-xl text-black"/>

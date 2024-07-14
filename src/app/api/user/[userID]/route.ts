@@ -34,6 +34,12 @@ export async function PUT(req:any , { params }:any){
    try {
        // Create User ( Get User By Id )
        let user = await User.findById(userID);
+       if (!user) {
+        return NextResponse.json(
+          { error: 'User not found' },
+          { status: 404 }
+        );
+      }
        // set user name 
        user.name = name;
        // set user email 
@@ -65,13 +71,25 @@ export async function PUT(req:any , { params }:any){
 //ROUTE 3 : DELETE User  [http://localhost:3000/api/user/userId]
 export async function DELETE(request:any, { params }:any) {
    // Get userId From params 
-  const { userId } = params;
+  const { userID } = params;
+
+  
 
   try {
-      await User.findByIdAndDelete( userId )
-      // Return message And Status 
-      return NextResponse.json({ message: "User deleted successfully"},{ status: 201 })
+    const deletedUser = await User.findByIdAndDelete(userID);
 
+    if (!deletedUser) {
+      return NextResponse.json(
+        { error: 'User not found' },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json(
+        { message: "User deleted successfully" },
+        { status: 200 }
+      );
+       
   } catch (error) {
       console.log(error)
       // Return Error And Status 

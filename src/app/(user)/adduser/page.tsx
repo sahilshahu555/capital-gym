@@ -51,7 +51,7 @@ const AddUser = () => {
                         is_active: true,
                         fee_paid: false
                     })
-                router.push('/userlist')
+                router.push('/dashboard')
             }
             
         } catch (error:any) {

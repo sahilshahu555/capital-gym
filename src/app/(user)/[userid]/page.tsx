@@ -1,10 +1,14 @@
 "use client" // use client 👉 For Client Component
+import { useGlobalContext } from "@/context/store";
 
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation'
 // Single User Page
 const EditUser = ({ params }:any) => {
+
+    const {userList} =useGlobalContext();
+    console.log(userList);
     // Crreate Router 
     const router = useRouter()
     const [flag, setFlag] = useState<boolean>(false)
@@ -30,24 +34,31 @@ const EditUser = ({ params }:any) => {
 
     // Create Get User By Id Function
     const getUserById = async () => {
-        const res = await fetch(`/api/user/${userid}`, {
-            method: 'GET',
-        })
-        // Create Data
-        const data = await res.json();
-         console.log(data?.getSingleUser)
+
+        const UserArr=userList.filter((user:any)=>user._id== userid)
+
+        const User =UserArr?.[0]
+
+        console.log("User :- ",User)
+
+        // const res = await fetch(`/api/user/${userid}`, {
+        //     method: 'GET',
+        // })
+        // // Create Data
+        // const data = await res.json();
+        //  console.log(data?.getSingleUser)
        
 
         // Set Employee Data
         setUser({
-            _id: data?.getSingleUser?._id,
-            name: data?.getSingleUser?.name,
-            email: data?.getSingleUser?.email,
-            address: data?.getSingleUser?.address,
-            mobile: data?.getSingleUser?.mobile,
-            is_active: data?.getSingleUser?.is_active,
-            fee_paid: data?.getSingleUser?.fee_paid,
-            joining_date: data?.getSingleUser?.joining_date,
+            _id: User?._id,
+            name: User?.name,
+            email: User?.email,
+            address: User?.address,
+            mobile: User?.mobile,
+            is_active: User?.is_active,
+            fee_paid: User?.fee_paid,
+            joining_date: User?.joining_date,
 
         })
         setLoad(false)
@@ -114,7 +125,7 @@ const deleteUser = async (_id:string) => {
     }
     else {
         alert(message) // Success Message
-        router.push("/userlist")
+        router.push("/dashboard")
     }
 
 }
@@ -195,7 +206,7 @@ const deleteUser = async (_id:string) => {
                         <input
                             type="number"
                             name='mobile'
-                            placeholder='Enter salary'
+                            placeholder='Enter number'
                             value={user.mobile}
                             onChange={(e) => setUser({
                                 ...user,
@@ -232,15 +243,15 @@ const deleteUser = async (_id:string) => {
         }
 
         {user.name && !flag &&
-        <div className="flex flex-col justify-center items-center h-screen">
-            <div className="text-start  text-xl flex flex-col gap-3">
-                <Link href={`/userlist`} className="text-white">Name :- {user?.name}</Link>
-                <h1 className="text-white">Email :- {user?.email}</h1>
-                <h1 className="text-white">Mobile :- {user?.mobile}</h1>
-                <h1 className="text-white">Joining Date :- {user?.joining_date.toString().substring(0,10)}</h1>
-                <h1 className="text-white">Address :- {user?.address}</h1>
+        <div className="flex flex-col justify-center items-center h-screen  ">
+            <div className="text-start  text-xl flex flex-col gap-3  ">
+                <Link href={`/userlist`} className="text-white px-2 md:px-0">Name :- {user?.name}</Link>
+                <h1 className="text-white px-2 md:px-0">Email :- {user?.email}</h1>
+                <h1 className="text-white px-2 md:px-0">Mobile :- {user?.mobile}</h1>
+                <h1 className="text-white px-2 md:px-0">Joining Date :- {user?.joining_date.toString().substring(0,10)}</h1>
+                <h1 className="text-white px-2 md:px-0">Address :- {user?.address}</h1>
 
-                <div className="flex flex-row justift-center gap-5 items-center my-4 md:my-10 ">
+                <div className="flex flex-row justift-center gap-5 items-center my-4 md:my-10 px-2 md:px-0">
 
                     <button className="bg-red-500  w-40 text-white rounded-xl m-auto text-md p-2  active:scale-90 hover:bg-green-400" onClick={()=>{setFlag(!flag)}}>Edit User</button>
 

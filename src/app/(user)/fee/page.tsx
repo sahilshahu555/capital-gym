@@ -1,4 +1,5 @@
 "use client" // use client 👉 For Client Component
+import { useGlobalContext } from "@/context/store";
 
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
@@ -7,69 +8,29 @@ type Props = {}
 
 const TodayFeeCollection = (props: Props) => {
 
-// User State 
-const [userList, setUserList] = useState([]);
+    const {userList} =useGlobalContext();
+    console.log(userList);
 
-
-const [load, setLoad] = useState(false);
-
-
-// Get User List Function 
-const getUserList = async () => {
-    // Fetch data from api 
-    const res = await fetch(`/api/user`)
-
-    // Create data
-    const data = await res.json();
-
-    // Store data in employee state through setEmployee()
-    setUserList(data)
-    setLoad(false)
-
-}
-
-// Delete Employee Function 
-const deleteUser = async (_id:string) => {
-    const res = await fetch(`/api/user/${_id}`, {
-        method: 'DELETE'
-    })
-
-    // Create Data 
-    const data = await res.json();
-    // console.log(data)
-
-    // Destructure data
-    const { message, error } = data
-
-    // Condition
-    if (error) {
-        alert(error) // Error Message
-    }
-    else {
-        alert(message) // Success Message
-    }
-
-    getUserList(); // Call GetEmployeeList Function
-}
+    const [feeCollectionList,setFeeCollectionList]=useState<any>()
 
 
 useEffect(() => {
     // Call getUserList Function
-    setLoad(true)
-    getUserList();
-}, []);
+      const arr= userList.filter((elm:any)=>elm.joining_date.toString().substring(8,10) === new Date().toDateString().substring(8,10))
+      setFeeCollectionList(arr)
+}, [userList]);
 
-  if(userList){console.log(userList);}
+ console.log(feeCollectionList);
 
 const t:any= new Date().toDateString().substring(8,10)
 
-const feeCollectionList= userList.filter((elm:any)=>elm.joining_date.toString().substring(8,10) === new Date().toDateString().substring(8,10))
+// const feeCollectionList= userList.filter((elm:any)=>elm.joining_date.toString().substring(8,10) === new Date().toDateString().substring(8,10))
 
 
 console.log("Todays Date:- ", t , "p")
 
   
-if(load){return <h1 className='text-center my-10 text-3xl font-[900] h-screen flex justify-center items-center text-white'>Loading ...</h1>}
+// if(load){return <h1 className='text-center my-10 text-3xl font-[900] h-screen flex justify-center items-center text-white'>Loading ...</h1>}
 
   return (
 
@@ -77,15 +38,15 @@ if(load){return <h1 className='text-center my-10 text-3xl font-[900] h-screen fl
         {t && <>
            <div className="fixed  py-6 w-full z-50 bg-[#AFE61E] border-b-2">
            <Link  href={"/dashboard"} >
-           <h1 className='text-center tracking-wider text-2xl md:text-3xl font-[900] w-full'>{`Today's Fees Collection List :- ${feeCollectionList.length}`}</h1>
+           <h1 className='text-center tracking-wider text-2xl md:text-3xl font-[900] w-full'>{`Today's Fees Collection List :- ${feeCollectionList?.length >= 0 ? feeCollectionList?.length : "0" }`}</h1>
            </Link>
            
            </div>
-           {feeCollectionList.length>0 ?
+           {feeCollectionList?.length > 0 ?
             
            ( <div className="pt-36 md:pt-40 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 mx-10  gap-8  mb-10">
            
-           {feeCollectionList?.map((user:any,index)=>(
+           {feeCollectionList?.map((user:any,index:any)=>(
                <Link href={`/${user._id}`} key={index}>
                <div  className={`${user.fee_paid ?"bg-[#AFE61E]":"bg-red-500 animate-bounce"} p-1.5 md:p-4 font-semibold rounded-xl shadow-md shadow-indigo-500  hover:scale-105 transition-all`}>
                    <div className='flex flex-col gap-y-2   justify-center w-fit m-auto'>

@@ -1,8 +1,29 @@
+"use client"
+import { useGlobalContext } from "@/context/store";
 import Image from "next/image";
 import Link from "next/link";
-
+import {useEffect} from "react"
 
 export default function Dashboard() {
+  const {userList,setUserList} =useGlobalContext();
+  console.log(userList);
+
+  const getUserList = async () => {
+    // Fetch data from api 
+    const res = await fetch(`/api/user`)
+
+    // Create data
+    const data = await res.json();
+
+    // Store data in employee state through setEmployee()
+    setUserList(data)
+
+}
+
+useEffect(()=>{
+  getUserList()
+},[])
+
   return (
     <main  className="text-center  h-screen flex flex-col justify-center items-center font-bold gap-10 text-white">
       <div className="flex flex-col gap-10 bg-[#AFE61E] p-10 md:p-16 rounded-xl mx-4 md:mx-0 ">

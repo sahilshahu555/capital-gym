@@ -1,10 +1,24 @@
 "use client"
-import {useState} from "react"
+import {useEffect, useState} from "react"
 import Link from "next/link";
 import { useRouter } from 'next/navigation'
+import { useGlobalContext } from "@/context/store";
 
 
 export default function Home() {
+  const {userList,setUserList} =useGlobalContext();
+
+  const getUserList = async () => {
+    // Fetch data from api 
+    const res = await fetch(`/api/user`)
+
+    // Create data
+    const data = await res.json();
+
+    // Store data in employee state through setEmployee()
+    setUserList(data)
+
+}
 
     const router = useRouter();
 
@@ -26,7 +40,12 @@ export default function Home() {
       }
       
     }
-  console.log(user)
+
+    useEffect(()=>{
+      // getUserList()
+    },[])
+
+  console.log(userList)
   return (
     <main  className="text-center  h-screen flex flex-col justify-center items-center font-bold gap-10 text-white">
 

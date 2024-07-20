@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { GlobalContextProvider } from "@/context/store";
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,7 +19,9 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth no-scrollbar">
       <body className={`${inter.className} bg-[#262626]`} suppressHydrationWarning={true} >
+      <GlobalContextProvider>
         {children}
+      </GlobalContextProvider>
       </body>
     </html>
   );

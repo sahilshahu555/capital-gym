@@ -1,14 +1,15 @@
 "use client" // use client 👉 For Client Component
 import { useGlobalContext } from "@/context/store";
-
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation'
 
 type Props = {}
 
 const TodayFeeCollection = (props: Props) => {
 
-    const {userList} =useGlobalContext();
+    const router = useRouter();
+    const {userList,auth} =useGlobalContext();
     console.log(userList);
 
     const [feeCollectionList,setFeeCollectionList]=useState<any>()
@@ -18,7 +19,11 @@ useEffect(() => {
     // Call getUserList Function
       const arr= userList.filter((elm:any)=>elm.joining_date.toString().substring(8,10) === new Date().toDateString().substring(8,10))
       setFeeCollectionList(arr)
-}, [userList]);
+
+      if(!auth){ router.push("/")}
+
+
+}, [userList,auth]);
 
  console.log(feeCollectionList);
 
@@ -48,14 +53,12 @@ console.log("Todays Date:- ", t , "p")
            
            {feeCollectionList?.map((user:any,index:any)=>(
                <Link href={`/${user._id}`} key={index}>
-               <div  className={`${user.fee_paid ?"bg-[#AFE61E]":"bg-red-500 animate-bounce"} p-1.5 md:p-4 font-semibold rounded-xl shadow-md shadow-indigo-500  hover:scale-105 transition-all`}>
+               <div  className={`${user.fee_paid ?"bg-[#AFE61E]":"bg-red-500 animate-bounce"} p-1.5 md:p-4 font-semibold rounded-xl shadow-sm shadow-white  hover:scale-105 transition-all`}>
                    <div className='flex flex-col gap-y-2   justify-center w-fit m-auto'>
                        <h1 className="text-sm md:text-md font-bold "> {user.name}</h1>
                        <h1 className="text-sm md:text-md font-bold "> {user.email}</h1>
                        <h1 className="text-sm md:text-md font-bold "> {user.fee_paid?"Fees Paid by ":"Please Collect Fees from "}{user.name}</h1>
-
-
-                       {/* <h1> {user.joining_date.toString().substring(8,10) === t ? user.joining_date.toString().substring(0,10):"00"}</h1> */}
+ 
 
                    </div>
                </div>

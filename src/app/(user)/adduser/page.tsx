@@ -1,12 +1,15 @@
 "use client" // use client 👉 For Client Component
 
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation'
+import { useGlobalContext } from "@/context/store";
 
 
 const AddUser = () => {
     const router = useRouter();
+  const {auth} =useGlobalContext();
+
     // Employee State 
     const [user, setUser] = useState({
         name: "",
@@ -68,6 +71,14 @@ const AddUser = () => {
             
         
     }
+
+    useEffect(()=>{
+       
+        
+        if(!auth){ router.push("/")}
+      
+      },[auth])
+      
 
     return (
         <div className=' bg-[#262626] w-full m-auto flex flex-col justify-center items-center gap-y-10 h-screen'>

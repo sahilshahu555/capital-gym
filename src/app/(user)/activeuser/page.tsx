@@ -2,12 +2,14 @@
 import { useGlobalContext } from "@/context/store";
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation'
 
 type Props = {}
 
 const ActiveUserList = (props: Props) => {
 
-const {userList} =useGlobalContext();
+    const router = useRouter();
+    const {userList,auth} =useGlobalContext();
 console.log(userList);
 
 const [activeUserList,setActiveUserList]=useState<any>()
@@ -35,9 +37,11 @@ useEffect(() => {
     // setLoad(true)
    const arr= userList.filter((elm:any)=>elm.is_active === true)
    setActiveUserList(arr)
-//    setLoad(false)
-    
-}, [userList]);
+   // setLoad(false)
+   
+   if(!auth){ router.push("/")}
+
+}, [userList,auth]);
 
   if(userList){console.log(userList);}
 
@@ -63,22 +67,13 @@ console.log("Todays Date:- ", t , "p")
         <div className="pt-36 md:pt-40 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mx-10  gap-8  mb-10">
             {activeUserList?.map((user:any,index:any)=>(
                 <Link href={`/${user._id}`} key={index}>
-                <div  className={`${user.fee_paid ?"bg-[#AFE61E]":"bg-red-500"} p-1.5 md:p-4 font-semibold rounded-xl shadow-md shadow-indigo-500  hover:scale-105 transition-all`}>
+                <div  className={`${user.fee_paid ?"bg-[#AFE61E]":"bg-red-500"} p-1.5 md:p-4 font-semibold rounded-xl shadow-sm shadow-white  hover:scale-105 transition-all`}>
                     <div className='flex flex-col gap-y-2   justify-center w-fit m-auto'>
                         <h1 className="text-sm md:text-md font-bold "> {user.name}</h1>
                         <h1 className="text-sm md:text-md font-bold "> {user.email}</h1>
-
-                        {/* <h1> {user.joining_date.toString().substring(8,10) === t ? user.joining_date.toString().substring(0,10):"00"}</h1> */}
-
                     </div>
                 </div>
-                {/* <div  className={`${user.joining_date.toString().substring(8,10) === t?"bg-red-500":"bg-[#AFE61E]"} p-1.5 md:p-4 font-semibold rounded-xl shadow-md shadow-indigo-500  hover:scale-105 transition-all`}>
-                    <div className='flex flex-col gap-y-2   justify-center w-fit m-auto'>
-                        <h1 className="text-sm md:text-md font-bold "> {user.name}</h1>
-                        <h1 className="text-sm md:text-md font-bold "> {user.email}</h1>
-
-                    </div>
-                </div> */}
+               
                 </Link>
             ))}
         </div>

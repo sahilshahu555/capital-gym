@@ -1,14 +1,16 @@
 "use client" // use client 👉 For Client Component
-import { useGlobalContext } from "@/context/store";
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
+import { useGlobalContext } from "@/context/store";
+import { useRouter } from 'next/navigation'
 
 type Props = {}
 
 const UserList = (props: Props) => {
+    const router = useRouter();
 
-const {userList,setUserList} =useGlobalContext();
-console.log(userList);
+    const {userList,auth} =useGlobalContext();
+    console.log(userList);
     
 // const [load, setLoad] = useState(false);
 
@@ -31,10 +33,10 @@ console.log(userList);
 
 
 useEffect(() => {
-    // Call getUserList Function
-    // setLoad(true)
-    // getUserList();
-}, []);
+  
+    if(!auth){ router.push("/")}
+
+}, [auth]);
 
   if(userList){console.log(userList);}
 

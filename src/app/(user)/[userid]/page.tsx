@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation'
 // Single User Page
 const EditUser = ({ params }:any) => {
 
-    const {userList} =useGlobalContext();
+    const {userList,auth} =useGlobalContext();
     console.log(userList);
     // Crreate Router 
     const router = useRouter()
@@ -41,13 +41,6 @@ const EditUser = ({ params }:any) => {
 
         console.log("User :- ",User)
 
-        // const res = await fetch(`/api/user/${userid}`, {
-        //     method: 'GET',
-        // })
-        // // Create Data
-        // const data = await res.json();
-        //  console.log(data?.getSingleUser)
-       
 
         // Set Employee Data
         setUser({
@@ -134,7 +127,11 @@ const deleteUser = async (_id:string) => {
         // Call getUserById Function 
         setLoad(true)
         getUserById();
-    }, []);
+
+        if(!auth){ router.push("/")}
+
+
+    },[auth]);
 
     if(load){return <h1 className='text-center my-10 text-3xl font-[900] h-screen flex justify-center items-center text-white'>Loading ...</h1>}
 
@@ -253,9 +250,9 @@ const deleteUser = async (_id:string) => {
 
                 <div className="flex flex-row justift-center gap-5 items-center my-4 md:my-10 px-2 md:px-0">
 
-                    <button className="bg-red-500  w-40 text-white rounded-xl m-auto text-md p-2  active:scale-90 hover:bg-green-400" onClick={()=>{setFlag(!flag)}}>Edit User</button>
+                    <button className="bg-red-500  w-40 text-white rounded-xl m-auto text-md p-2  active:scale-90 hover:bg-indigo-500" onClick={()=>{setFlag(!flag)}}>Edit User</button>
 
-                    <button className="bg-red-500  w-40 text-white rounded-xl m-auto text-md p-2  active:scale-90 hover:bg-green-400" onClick={()=>{deleteUser(user?._id)}}>Delete User</button>
+                    <button className="bg-red-500  w-40 text-white rounded-xl m-auto text-md p-2  active:scale-90 hover:bg-indigo-500" onClick={()=>{deleteUser(user?._id)}}>Delete User</button>
 
                 </div>
 

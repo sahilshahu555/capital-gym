@@ -18,21 +18,30 @@ const TodayFeeCollection = (props: Props) => {
 useEffect(() => {
     // Call getUserList Function
       const arr= userList.filter((elm:any)=>elm.joining_date.toString().substring(8,10) === new Date().toDateString().substring(8,10))
-      setFeeCollectionList(arr)
+      console.log("arr",arr)
+      const newFilterArr=arr.filter((elm:any)=>new Date(elm.joining_date).toString().substring(0,10) !== new Date().toString().substring(0,10))
+      console.log("newFilterArr :-",newFilterArr)
+      setFeeCollectionList(newFilterArr)
 
       if(!auth){ router.push("/")}
-
-
 }, [userList,auth]);
 
- console.log(feeCollectionList);
+// if(feeCollectionList ){
+ 
+//   const mDate= new Date(feeCollectionList[1]?.joining_date).toString().substring(0,10)
+//   const todayDate= new Date().toString().substring(0,10)
+//   console.log(mDate)
+//   console.log("TodayDate:- ", todayDate )
+
+//   if(mDate === todayDate ){console.log("i am fine with this")}
+// }
+ 
 
 const t:any= new Date().toDateString().substring(8,10)
 
-// const feeCollectionList= userList.filter((elm:any)=>elm.joining_date.toString().substring(8,10) === new Date().toDateString().substring(8,10))
 
 
-console.log("Todays Date:- ", t , "p")
+
 
   
 // if(load){return <h1 className='text-center my-10 text-3xl font-[900] h-screen flex justify-center items-center text-white'>Loading ...</h1>}

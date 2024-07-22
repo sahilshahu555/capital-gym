@@ -29,7 +29,7 @@ export async function PUT(req:any , { params }:any){
 
 
    // Get Data From Frontend 
-   const { name, email, mobile, address, fee_paid, is_active } = await req.json();
+   const { name, email, mobile, address, fee_paid, is_active,joining_date } = await req.json();
 
    try {
        // Create User ( Get User By Id )
@@ -52,6 +52,7 @@ export async function PUT(req:any , { params }:any){
        user.fee_paid = fee_paid;
        // set user is_active
        user.is_active = is_active;
+       user.joining_date= joining_date;
 
        // Create Update User
        const updatedUser = await user.save();

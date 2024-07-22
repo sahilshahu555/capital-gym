@@ -52,7 +52,7 @@ const t:any= new Date().toDateString().substring(8,10)
         {t && <>
            <div className="fixed  py-6 w-full z-50 bg-[#AFE61E] border-b-2">
            <Link  href={"/dashboard"} >
-           <h1 className='text-center tracking-wider text-2xl md:text-3xl font-[900] w-full'>{`Today's Fees Collection List :- ${feeCollectionList?.length >= 0 ? feeCollectionList?.length : "0" }`}</h1>
+           <h1 className='text-center tracking-wider px-2 text-xl md:text-3xl font-[900] w-full'>{`Today's Fees Collection List :- ${feeCollectionList?.length >= 0 ? feeCollectionList?.length : "0" }`}</h1>
            </Link>
            
            </div>

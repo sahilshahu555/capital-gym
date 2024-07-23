@@ -1,21 +1,18 @@
-"use client" // use client 👉 For Client Component
+"use client"
+// Import necessary modules
 import { useGlobalContext } from "@/context/store";
-
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation';
 
 // Single User Page
 const EditUser = ({ params }: any) => {
-
     const { userList, auth } = useGlobalContext();
-    console.log(userList);
-    // Create Router 
-    const router = useRouter()
-    const [flag, setFlag] = useState<boolean>(false)
-    const [load, setLoad] = useState<boolean>(false)
+    const router = useRouter();
+    const [flag, setFlag] = useState<boolean>(false);
+    const [load, setLoad] = useState<boolean>(false);
 
-    // Create Employee State 
+    // Initialize user state
     const [user, setUser] = useState({
         _id: "",
         name: "",
@@ -27,16 +24,16 @@ const EditUser = ({ params }: any) => {
         joining_date: ""
     });
 
-    // Destructure EmployeeId from params
-    const { userid } = params
+    // Destructure userid from params
+    const { userid } = params;
 
-    // Create Get User By Id Function
+    // Function to get user by ID
     const getUserById = async () => {
-        const UserArr = userList.filter((user: any) => user._id == userid)
-        const User = UserArr?.[0]
-        console.log("User :- ", User)
+        const UserArr = userList.filter((user: any) => user._id == userid);
+        const User = UserArr?.[0];
+        console.log("User :- ", User);
 
-        // Set Employee Data
+        // Set user data
         setUser({
             _id: User?._id,
             name: User?.name,
@@ -46,13 +43,13 @@ const EditUser = ({ params }: any) => {
             is_active: User?.is_active,
             fee_paid: User?.fee_paid,
             joining_date: User?.joining_date ? User?.joining_date.split('T')[0] : "", // Ensure date is in YYYY-MM-DD format
-        })
-        setLoad(false)
-    }
+        });
+        setLoad(false);
+    };
 
-    // Create Update Employee Function
+    // Function to update user
     const updateUser = async () => {
-        setLoad(true)
+        setLoad(true);
 
         const res = await fetch(`/api/user/${userid}`, {
             method: 'PUT',
@@ -66,93 +63,81 @@ const EditUser = ({ params }: any) => {
                 address: user.address,
                 fee_paid: user.fee_paid,
                 is_active: user.is_active,
-                joining_date: user.joining_date
+                joining_date: user.joining_date.toString()
             })
-        })
-        // Create Data 
+        });
+        
         const data = await res.json();
-        console.log(data)
+        console.log(data);
 
-        // Destructure Data 
         const { message, error } = data;
 
-        // Condition
         if (error) {
-            alert(JSON.stringify(error)) // Error Message
+            alert(JSON.stringify(error)); // Error Message
+        } else {
+            alert(message); // Success Message
+            // router.push("/dashboard");
         }
-        else {
-            alert(message) // Success Message
-            // navigate (/userlist) route
-        }
-        setFlag(!flag)
-        setLoad(false)
-    }
 
-    // Delete Employee Function 
+        setFlag(!flag);
+        setLoad(false);
+    };
+
+    // Function to delete user
     const deleteUser = async (_id: string) => {
         const res = await fetch(`/api/user/${userid}`, {
             method: 'DELETE'
-        })
+        });
 
-        // Create Data 
         const data = await res.json();
-        console.log(data)
+        console.log(data);
 
-        // Destructure data
-        const { message, error } = data
+        const { message, error } = data;
 
-        // Condition
         if (error) {
-            alert(error) // Error Message
+            alert(error); // Error Message
+        } else {
+            alert(message); // Success Message
+            router.push("/dashboard");
         }
-        else {
-            alert(message) // Success Message
-            router.push("/dashboard")
-        }
-    }
+    };
 
     useEffect(() => {
-        // Call getUserById Function 
-        setLoad(true)
+        setLoad(true);
         getUserById();
 
-        if (!auth) { router.push("/") }
-
+        if (!auth) {
+            router.push("/");
+        }
     }, [auth]);
 
-    if (load) { return <h1 className='text-center my-10 text-3xl font-[900] h-screen flex justify-center items-center text-white'>Loading ...</h1> }
-
+    if (load) {
+        return <h1 className='text-center my-10 text-3xl font-[900] h-screen flex justify-center items-center text-white'>Loading ...</h1>;
+    }
+          console.log(user)
     return (
-        <div className='font-bold '>
+        <div className='font-bold'>
             <div className="fixed py-6 w-full z-50 bg-[#AFE61E] border-b-2">
-                <Link href={"/dashboard"} >
+                <Link href={"/dashboard"}>
                     <h1 className='text-center text-3xl font-[900] w-full'>Edit User </h1>
                 </Link>
             </div>
+
             {flag &&
-                <div className='bg-[#262626] m-auto flex flex-col justify-center items-center gap-y-6 h-screen '>
-                    {/* Main  */}
-                    <div className="md:w-[30%] shadow-md border border-gray-400 rounded-xl py-4 px-9 bg-[#AFE61E] mt-20 ">
-                        {/* Top  */}
+                <div className='bg-[#262626] m-auto flex flex-col justify-center items-center gap-y-4 h-screen '>
+                    <div className="md:w-[30%] shadow-md border border-gray-400 rounded-xl py-2 px-9 bg-[#AFE61E] mt-20 ">
                         <div className="top ">
-                            {/* Top-Child  */}
-                            <div className="flex gap-[20px] mb-5 items-center">
-                                {/* link  */}
+                            <div className="flex gap-[20px] mb-4 items-center">
                                 <button onClick={() => setFlag(!flag)}>
-                                    {/* Svg icon  */}
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="m11.25 9-3 3m0 0 3 3m-3-3h7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                     </svg>
                                 </button>
-
-                                {/* text  */}
                                 <h1 className='text-2xl font-semibold'>Edit User Detail</h1>
                             </div>
                         </div>
 
-                        {/* Bottom  */}
                         <div className=" ">
-                            {/* User Name Input   */}
                             <div className="">
                                 <input
                                     type="text"
@@ -167,7 +152,6 @@ const EditUser = ({ params }: any) => {
                                 />
                             </div>
 
-                            {/* User Email Input  */}
                             <div className="">
                                 <input
                                     type="email"
@@ -182,7 +166,6 @@ const EditUser = ({ params }: any) => {
                                 />
                             </div>
 
-                            {/* User Mobile Input  */}
                             <div className="">
                                 <input
                                     type="number"
@@ -197,8 +180,7 @@ const EditUser = ({ params }: any) => {
                                 />
                             </div>
 
-                            {/* User Address Input  */}
-                            <div className="">
+                            <div className="mb-4">
                                 <textarea
                                     name='userAddress'
                                     placeholder='Enter address'
@@ -211,12 +193,11 @@ const EditUser = ({ params }: any) => {
                                 />
                             </div>
 
-                            {/* Joining Date Input  */}
-                            <div className="mb-5">
+                            <div className="mb-4">
                                 <input
                                     type="date"
                                     name='joiningDate'
-                                    value={user.joining_date}
+                                    value={user.joining_date ? user.joining_date : ""}
                                     onChange={(e) => setUser({
                                         ...user,
                                         joining_date: e.target.value
@@ -225,8 +206,7 @@ const EditUser = ({ params }: any) => {
                                 />
                             </div>
 
-                            {/* Fee Paid Select */}
-                            <div className="mb-5">
+                            <div className="mb-4">
                                 <select
                                     value={user.fee_paid ? "true" : "false"}
                                     onChange={(e) => setUser({
@@ -240,8 +220,7 @@ const EditUser = ({ params }: any) => {
                                 </select>
                             </div>
 
-                            {/* Is Active Select */}
-                            <div className="mb-5 w-full">
+                            <div className="mb-4 w-full">
                                 <select
                                     value={user.is_active ? "true" : "false"}
                                     onChange={(e) => setUser({
@@ -255,8 +234,7 @@ const EditUser = ({ params }: any) => {
                                 </select>
                             </div>
 
-                            {/* Update Button  */}
-                            <div>
+                            <div className="my-2">
                                 <button onClick={() => { updateUser() }} className=' bg-red-500 hover:bg-red-400 w-full py-1.5 border border-gray-400 rounded-md font-medium '>Edit Detail</button>
                             </div>
                         </div>
@@ -271,11 +249,11 @@ const EditUser = ({ params }: any) => {
                         <h1 className="text-white px-4 md:px-0">Email :- {user?.email}</h1>
                         <h1 className="text-white px-4 md:px-0">Mobile :- {user?.mobile}</h1>
                         <h1 className="text-white px-4 md:px-0">Joining Date :- {user?.joining_date}</h1>
-                        <h1 className={`${user?.fee_paid ? "text-green-500" : "text-red-500 animate-bounce"} text-white px-4 md:px-0`}>Fee Paid :- {user?.fee_paid ? "Yes" : "No"}</h1>
-                        <h1 className={`${user?.is_active? "text-green-500 " : "text-red-500 animate-bounce"} text-white px-4 md:px-0`}>Active :- {user?.is_active ? "Yes" : "No"}</h1>
+                        <h1 className={`${user.fee_paid ? "text-green-500" : "text-red-500 animate-bounce"}  px-4 md:px-0`}>Fee Paid :- {user?.fee_paid ? "Yes" : "No"}</h1>
+                        <h1 className={`${user?.is_active ? "text-green-500 " : "text-red-500 animate-bounce"}  px-4 md:px-0`}>Active :- {user?.is_active ? "Yes" : "No"}</h1>
                         <h1 className="text-white px-4 md:px-0">Address :- {user?.address}</h1>
 
-                        <div className="flex flex-row justift-center gap-5 items-center my-4 md:my-10 px-2 md:px-0">
+                        <div className="flex flex-row justify-center gap-5 items-center my-4 md:my-10 px-2 md:px-0">
                             <button className="bg-red-500 w-40 text-white rounded-xl m-auto text-md p-2 active:scale-90 hover:bg-indigo-500" onClick={() => { setFlag(!flag) }}>Edit User</button>
                             <button className="bg-red-500 w-40 text-white rounded-xl m-auto text-md p-2 active:scale-90 hover:bg-indigo-500" onClick={() => { deleteUser(user?._id) }}>Delete User</button>
                         </div>
@@ -283,7 +261,7 @@ const EditUser = ({ params }: any) => {
                 </div>
             }
         </div>
-    )
-}
+    );
+};
 
-export default EditUser
+export default EditUser;
